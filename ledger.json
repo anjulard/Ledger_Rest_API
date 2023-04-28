@@ -1,0 +1,7 @@
+{
+    "start_date" : "March 28th, 2020",
+    "end_date"   : "May 27th, 2020",
+    "frequency"  : "FORTNIGHTLY",
+    "weekly_rent": 555,
+    "timezone"   : "AU"
+}
