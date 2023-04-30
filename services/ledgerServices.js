@@ -1,14 +1,15 @@
+import moment from 'moment';
 
 // Create ledger
 export const generateLedger = (start_date, end_date, frequency, weekly_rent) => {
     let lineItem = [];
-    const { frequencyType, numberOfDays } = this.getFrequencyData(frequency);
-     const amount = this.getAmount(weekly_rent, frequencyType);
+    let numberOfDays = getFrequencyData(frequency);
+    let amount = getAmount(weekly_rent, frequency);
      
      if (amount != null) {
-        for (let index = new Date(toISOString(start_date)) ; index < toISOString(end_date); index.setDate(index.getDate()+numberOfDays)) {
-            let startDate = index;
-            let endDate   = index.setDate(index.getDate() + numberOfDays);
+        for (let index = moment(start_date) ; index.isBefore(end_date); index.add(numberOfDays, 'd')) {
+            let startDate = moment(index);
+            let endDate   = moment(startDate).add(numberOfDays, 'd');
 
             lineItem.push( {startDate, endDate, amount} );
             
@@ -19,35 +20,28 @@ export const generateLedger = (start_date, end_date, frequency, weekly_rent) => 
      }
 }
 
+// Get Payment Frequency data
 export const getFrequencyData = (frequency) => {
-    let frequencyObj = {};
-
-    switch (frequency) {
-        case "WEEKLY" :
-            frequencyObj = {
-                frequencyType: "WEEKLY",
-                numberOfDays: 7
-            }
-            break;
-        case "FORTNIGHTLY" :
-            frequencyObj = {
-                frequencyType: "FORTNIGHTLY",
-                numberOfDays: 14
-            }
-            break;
-        default:
-            break;
-
+    let numberOfDays;
+    
+    if (frequency === "WEEKLY") {
+        numberOfDays = 7;
+       
+    }else if (frequency === "FORTNIGHTLY") {
+        numberOfDays = 14;
     }
-    return frequencyObj;
+
+    return numberOfDays;
 }
 
+
+// Calculate amount based on Frequency
 export const getAmount = (weekly_rent, frequencyType ) => {
-    const amount = 0;
-    if (weekly_rent > 0 && frequencyType == "WEEKLY") {
+    let amount;
+    if (weekly_rent > 0 && frequencyType === "WEEKLY") {
         amount = weekly_rent;
 
-    }else if (weekly_rent > 0 && frequencyType == "FORTNIGHTLY") {
+    }else if (weekly_rent > 0 && frequencyType === "FORTNIGHTLY") {
         amount = weekly_rent * 2;
     }
 

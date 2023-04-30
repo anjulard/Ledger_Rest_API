@@ -2,29 +2,35 @@ import { v4 as uuidv4 } from 'uuid';
 import { generateLedger }  from '../services/ledgerServices.js';
 import { prepareResponse }  from '../utils/response.js';
 
-// data array is empty at starts
+// Data array is empty at start
 let leases = [];
+
+export const getLease = (req, res) => {
+    res.send(leases);
+    res.send('Lease Data');
+
+}
 
 // POST Route
 export const createLease = (req, res) => {
     
     const lease = req.body;
 
-    // use spread operator
+    // Used spread operator
     // Push data into lease array 
     leases.push({...lease, lease_id: uuidv4() });
 
-    res.send(`Lease ${ledger.lease_id} is added to the ledger.`);
+    res.send(`Lease ${lease.lease_id} is added to the ledger.`);
 }
 
 // Generate Ledger for a specific lease id
 export const fetchLedger = (req, res) => {
     const { lease_id } = req.params;
-
-    const findLease = leases.find((lease) => lease.lease_id == lease_id);
-    res.send(findLease);
-
-    const lineItem = generateLedger(toISOString(findLease.start_date), toISOString(findLease.end_date), findLease.frequency, findLease.weekly_rent);
+    let { start_date, end_date, frequency, weekly_rent } = req.body;
+    start_date = new Date(start_date).toISOString();
+    end_date   = new Date(end_date).toISOString();
+    
+    const lineItem = generateLedger(start_date, end_date, frequency, weekly_rent);
     
     // Prepare response
     const response = prepareResponse(lineItem);
