@@ -38,20 +38,21 @@ The total amount for each line item in the ledger will be based on the payment f
 
 ## Steps to generate the Ledger
 
-Step 01 :
+- Step 01 :
   Create a new lease with required inputs
-  - Start Date              : Should be provided in ISO Standard format
-  - End Date                : Should be provided in ISO Standard format
-  - Weekly Amount           : Should be provided in number format
-  - Frequency of the payment: Should be provided as a String
+  
+    - Start Date              : Should be provided in ISO Standard format
+    - End Date                : Should be provided in ISO Standard format
+    - Weekly Amount           : Should be provided in number format
+    - Frequency of the payment: Should be provided as a String
 <br></br>
 `POST Request http://localhost:4000/ledger/`
 
-Step 02 : Copy the Auto-Generated Lease Id
+- Step 02 : Copy the Auto-Generated Lease Id
 <br></br>
 `Lease with Leade ID : {Lease_Id} is added successfully.`
 
-Step 03 :
+- Step 03 :
 Generate the ledger for a particular lease by providing the Lease Id
 <br></br>
 `GET Request http://localhost:4000/ledger/generateLedger/{Lease_Id}`
