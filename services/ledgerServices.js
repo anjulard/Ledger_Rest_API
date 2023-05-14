@@ -4,19 +4,20 @@ import moment from 'moment';
 // Create ledger
 export const generateLedger = (start_date, end_date, frequency, weekly_rent) => {
     let lineItem     = [];
-    let numberOfDays = getFrequencyData(frequency, start_date);
+    let numberOfDays ;
+    let tempDate ;
     let amount       = getAmount(weekly_rent, frequency);
     end_date         = moment(end_date);
-    
-     if (amount != null) {
-        for (let index = moment(start_date) ; index.isBefore(end_date); index.add(numberOfDays, 'd')) {
+    console.log(test(start_date, end_date));
+        for (let index = moment(start_date) ; index.isBefore(end_date); index.add(numberOfDays + 1, 'd')) {
+            numberOfDays  = getFrequencyData(frequency, index);
             let startDate = moment(index);
-            let tempDate   = moment(startDate).add(numberOfDays, 'd');
+            tempDate      = moment(startDate).add(numberOfDays, 'd');
             
             // Calculate amount to be paid for a line item that is cut short because of the end date.
             if ( end_date.isBefore(tempDate)) {
-                tempDate = tempDate.subtract(numberOfDays, 'd');
-                let remainingdays = (validateDate(end_date).getTime() - validateDate(tempDate).getTime())/ (1000 * 60 * 60 * 24);
+                tempDate            = tempDate.subtract(numberOfDays, 'd');
+                let remainingdays   = getRemainingDays(end_date, tempDate);
                 let remainingAmount = getRemainingAmount(weekly_rent, remainingdays);
 
                 lineItem.push( { tempDate, end_date, remainingAmount } );
@@ -26,13 +27,12 @@ export const generateLedger = (start_date, end_date, frequency, weekly_rent) => 
             }
 
             lineItem.push( { startDate, tempDate, amount } );
+            numberOfDays = getFrequencyData(frequency, index);
             
-        }
+        }      
         
-
         return lineItem;
     
-     }
 }
 
 
@@ -51,9 +51,7 @@ export const getFrequencyData = (frequency, start_date) => {
 
         if (next_date instanceof Date) {
             numberOfDays = (validateDate(next_date).getTime() - validateDate(start_date).getTime())/ (1000 * 60 * 60 * 24);
-       
-        }else {
-            numberOfDays = (next_date.getTime() - start_date.getTime())/ (1000 * 60 * 60 * 24) - 1;
+            numberOfDays = Math.ceil(numberOfDays);
         }
         
     }
@@ -86,12 +84,22 @@ export const getRemainingAmount = (weekly_rent, numberOfDays) => {
     return remainingAmount.toFixed(2);
 }
 
+export const getRemainingDays = (end_date, tempDate) => {
+    let remainingdays = (validateDate(end_date).getTime() - validateDate(tempDate).getTime())/ (1000 * 60 * 60 * 24);
+    return remainingdays;
+
+}
+
 
 // Get same day every month for a given date.
 export const getNextMonthDate = (date) => {
     var dt = new Date(date);
-    dt = dt.setMonth(dt.getMonth() + 1);
-   
+    if (dt.getDate() <= 28) {
+        dt.setMonth(dt.getMonth() + 1);
+    } else {
+        dt = new Date(dt.getFullYear(), dt.getMonth() + 2, 0);
+    }
+    
     return validateDate(dt);
 }
 
@@ -99,4 +107,25 @@ export const getNextMonthDate = (date) => {
 // Validate Date
 export const validateDate = (date) => {
     return new Date(date);
+}
+
+export const test = (start, end) => {
+    let line = [];
+    let temp;
+    for (let index = moment(start) ; index.isBefore(end); index = temp) {
+        let startDate = index;
+        temp = index.add(1, 'M');
+        if ( new Date(start).getDate() != new Date(index).getDate()) {
+            temp = new Date(temp);
+            index =  new Date(index);
+            temp = new Date(index.getFullYear(), index.getMonth() + 1, 0);
+            temp = moment(temp);
+            console.log(temp);
+        }
+        line.push( { startDate, temp } );
+
+    }
+
+    return line;
+
 }
