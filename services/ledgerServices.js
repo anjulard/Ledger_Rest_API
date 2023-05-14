@@ -8,30 +8,29 @@ export const generateLedger = (start_date, end_date, frequency, weekly_rent) => 
     let tempDate ;
     let amount       = getAmount(weekly_rent, frequency);
     end_date         = moment(end_date);
-    console.log(test(start_date, end_date));
-        for (let index = moment(start_date) ; index.isBefore(end_date); index.add(numberOfDays + 1, 'd')) {
-            numberOfDays  = getFrequencyData(frequency, index);
-            let startDate = moment(index);
-            tempDate      = moment(startDate).add(numberOfDays, 'd');
+    for (let index = moment(start_date) ; index.isBefore(end_date); index.add(numberOfDays + 1, 'd')) {
+        numberOfDays  = getFrequencyData(frequency, index);
+        let startDate = moment(index);
+        tempDate      = moment(startDate).add(numberOfDays, 'd');
             
-            // Calculate amount to be paid for a line item that is cut short because of the end date.
-            if ( end_date.isBefore(tempDate)) {
-                tempDate            = tempDate.subtract(numberOfDays, 'd');
-                let remainingdays   = getRemainingDays(end_date, tempDate);
-                let remainingAmount = getRemainingAmount(weekly_rent, remainingdays);
+        // Calculate amount to be paid for a line item that is cut short because of the end date.
+        if ( end_date.isBefore(tempDate)) {
+            tempDate            = tempDate.subtract(numberOfDays, 'd');
+            let remainingdays   = getRemainingDays(end_date, tempDate);
+            let remainingAmount = getRemainingAmount(weekly_rent, remainingdays);
 
-                lineItem.push( { tempDate, end_date, remainingAmount } );
+            lineItem.push( { tempDate, end_date, remainingAmount } );
 
-                break;
+            break;
     
-            }
+        }
 
-            lineItem.push( { startDate, tempDate, amount } );
-            numberOfDays = getFrequencyData(frequency, index);
+        lineItem.push( { startDate, tempDate, amount } );
+        numberOfDays = getFrequencyData(frequency, index);
             
-        }      
+    }      
         
-        return lineItem;
+    return lineItem;
     
 }
 
@@ -109,20 +108,34 @@ export const validateDate = (date) => {
     return new Date(date);
 }
 
-export const test = (start, end) => {
+// Get same day every month for a given date. Get the closest day in the month if the start date of a line item 
+// doesn’t exist in some months.
+
+export const getMonthlyDate = (start, end) => {
     let line = [];
     let temp;
-    for (let index = moment(start) ; index.isBefore(end); index = temp) {
-        let startDate = index;
-        temp = index.add(1, 'M');
-        if ( new Date(start).getDate() != new Date(index).getDate()) {
-            temp = new Date(temp);
-            index =  new Date(index);
-            temp = new Date(index.getFullYear(), index.getMonth() + 1, 0);
+    let numofmonths = 1;
+    let startDate = moment(start);
+    let nextdate = moment(start);
+    for (let index = moment(start) ; index.isBefore(end); index.add(1, 'M')) {
+        
+        nextdate = start;
+        moment(nextdate).add(numofmonths, 'M');
+
+        if ( new Date(start).getDate() != new Date(moment(nextdate).add(numofmonths, 'M')).getDate()) {
+            temp = new Date(moment(nextdate).add(numofmonths, 'M'));
+            temp = new Date(temp.getFullYear(), temp.getMonth() + 1, 0);
             temp = moment(temp);
-            console.log(temp);
+            line.push( { startDate, temp } );
+            
+        }else{ 
+            temp = new Date(moment(nextdate).add(numofmonths, 'M'));
+            line.push( { startDate, temp } );
+
         }
-        line.push( { startDate, temp } );
+        
+        numofmonths = numofmonths + 1;
+        startDate = moment(temp).add(1, 'd');
 
     }
 
