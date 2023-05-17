@@ -119,7 +119,7 @@ export const getMonthlyPaymentDates = (start, end) => {
         if ( new Date(start).getDate() != new Date(moment(nextdate).add(numofmonths, 'M')).getDate()) {
             temp = new Date(moment(nextdate).add(numofmonths, 'M'));
             temp = new Date(temp.getFullYear(), temp.getMonth() + 1, 0);
-            temp = moment(temp);
+            temp = moment(temp).endOf('day');
 
             line.push( { startDate, temp } );
             
