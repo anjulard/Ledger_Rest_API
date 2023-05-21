@@ -1,7 +1,7 @@
-import express                    from "express";
-import { getLease, createLease  } from "../controllers/leaseController.js";
-import { fetchLedger }            from "../controllers/ledgerController.js";
-import { body }                   from "express-validator";
+import express                                             from "express";
+import { getLease, createLease, deleteLease, fetchLease  } from "../controllers/leaseController.js";
+import { fetchLedger }                                     from "../controllers/ledgerController.js";
+import { body }                                            from "express-validator";
 
 // initialize router
 const router = express.Router();
@@ -36,6 +36,12 @@ router.post('/', [
 
 // Get all available Lease
 router.get('/', getLease);
+
+// Get a specific Lease by giving lease id
+router.get('/:lease_id', fetchLease);
+
+// Delete given lease
+router.delete('/:lease_id', deleteLease);
 
 
 // In index.js '/ledger' is used as the starting path. All routes starting with '/ledger' here.

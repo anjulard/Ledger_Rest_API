@@ -11,8 +11,8 @@ const PORT = 4000;
 // sending and requsting data from json format
 app.use(bodyParser.json());
 
-// running ledgerRoutes when url starts to '/ledger'. 
-app.use('/ledger', ledgerRoutes);
+// running ledgerRoutes when url starts to '/lease'. 
+app.use('/lease', ledgerRoutes);
 
 app.get('/', (req, res) => {
 
