@@ -9,7 +9,6 @@ export const fetchLedger = (req, res) => {
     
     const lineItem = generateLedger(start_date, end_date, frequency, weekly_rent);
     
-    // Prepare response
     const response = prepareResponse(lineItem);
     res.send(response);
 

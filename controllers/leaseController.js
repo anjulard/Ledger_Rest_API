@@ -1,10 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
 import { validationResult } from "express-validator";
 
-// Data array is empty at start
+
 let leases = [];
 
-// POST Route
 export const createLease = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -34,7 +33,6 @@ export const fetchLease = (req, res) => {
 
 }
 
-// DELETE Route
 export const deleteLease = (req, res) => {
     const { lease_id } = req.params;
 

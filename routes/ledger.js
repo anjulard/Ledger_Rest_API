@@ -3,7 +3,7 @@ import { getLease, createLease, deleteLease, fetchLease  } from "../controllers/
 import { fetchLedger }                                     from "../controllers/ledgerController.js";
 import { body }                                            from "express-validator";
 
-// initialize router
+
 const router = express.Router();
 
 // Create a new Lease
@@ -18,13 +18,20 @@ router.post('/', [
         .notEmpty()
         .withMessage('End Date is required.')
         .isISO8601()
-        .withMessage('Invalid end_date. Please add end_date in ISO Date Format.'),
+        .withMessage('Invalid end_date. Please add end_date in ISO Date Format.')
+        .custom((value, { req }) => {
+            if(value <= req.body.start_date) {
+                throw new Error ('End date of Lease must be after start date');
+            }
+            return true;
+        }),
 
     body('weekly_rent')
         .notEmpty()
         .withMessage('Weekly Rent is required')
         .isNumeric()
         .withMessage('Invalid weekly rent value. Please add weekly_rent in number format.'),
+
     body('frequency')
         .notEmpty()
         .withMessage('Frequency is required')
@@ -40,11 +47,9 @@ router.get('/', getLease);
 // Get a specific Lease by giving lease id
 router.get('/:lease_id', fetchLease);
 
-// Delete given lease
 router.delete('/:lease_id', deleteLease);
 
-
-// In index.js '/ledger' is used as the starting path. All routes starting with '/ledger' here.
+// In index.js '/lease' is used as the starting path. All routes starting with '/lease' here.
 router.get('/generateLedger/:lease_id', fetchLedger);
 
 

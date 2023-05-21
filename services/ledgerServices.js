@@ -1,7 +1,6 @@
 import moment from 'moment';
 
 
-// Create Ledger
 export const generateLedger = (start_date, end_date, frequency, weekly_rent) => {
     let paymentLines = [];
     let lineItem     = [];
@@ -38,7 +37,7 @@ export const generateLedger = (start_date, end_date, frequency, weekly_rent) => 
 
 
 // Get Payment Frequency data
-export const getFrequencyData = (frequency, start_date) => {
+export const getFrequencyData = (frequency) => {
     let numberOfDays;
     
     if (frequency === "WEEKLY") {
@@ -52,7 +51,6 @@ export const getFrequencyData = (frequency, start_date) => {
 }
 
 
-// Calculate amount based on Frequency
 export const getAmount = (weekly_rent, frequencyType ) => {
     let amount;
     if (weekly_rent > 0 && frequencyType === "WEEKLY") {
@@ -68,37 +66,17 @@ export const getAmount = (weekly_rent, frequencyType ) => {
     return amount.toFixed(2);
 }
 
-
-//Calculate total amount to be paid for the remaining days
-export const getRemainingAmount = (weekly_rent, numberOfDays) => {
-    let remainingAmount = (weekly_rent / 7) * numberOfDays;
-
-    return remainingAmount.toFixed(2);
-}
-
 export const getRemainingDays = (end_date, tempDate) => {
     let remainingdays = (validateDate(end_date).getTime() - validateDate(tempDate).getTime())/ (1000 * 60 * 60 * 24);
     return remainingdays;
 
 }
 
+//Calculate total amount to be paid for the remaining days
+export const getRemainingAmount = (weekly_rent, numberOfDays) => {
+    let remainingAmount = (weekly_rent / 7) * numberOfDays;
 
-// Get same day every month for a given date.
-export const getNextMonthDate = (date) => {
-    var dt = new Date(date);
-    if (dt.getDate() <= 28) {
-        dt.setMonth(dt.getMonth() + 1);
-    } else {
-        dt = new Date(dt.getFullYear(), dt.getMonth() + 2, 0);
-    }
-    
-    return validateDate(dt);
-}
-
-
-// Validate Date
-export const validateDate = (date) => {
-    return new Date(date);
+    return remainingAmount.toFixed(2);
 }
 
 
@@ -110,10 +88,10 @@ export const getMonthlyPaymentDates = (start, end) => {
     let line        = [];
     let numofmonths = 1;
     let startDate   = moment(start);
-    let nextdate    = moment(start);
+    
     for (let index  = moment(start) ; index.isBefore(end); index.add(1, 'M')) {
         
-        nextdate = start;
+        let nextdate = start;
         moment(nextdate).add(numofmonths, 'M');
 
         if ( new Date(start).getDate() != new Date(moment(nextdate).add(numofmonths, 'M')).getDate()) {
@@ -153,4 +131,10 @@ export const getWeeklyPaymentDates = (start, end, frequency) => {
     }
 
     return line;
+}
+
+
+
+export const validateDate = (date) => {
+    return new Date(date);
 }
