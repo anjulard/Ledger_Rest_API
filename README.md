@@ -44,7 +44,6 @@ npm start
 
 - Server will be running on port 4000.    
 
-  Navigate to `http://localhost:4000`
 
 ## Steps to generate the Ledger
 
@@ -59,10 +58,10 @@ You can use Postman to execute requests and check responses.
     - Frequency of the payment: Should be provided as a String
     - Timezone                : provided as a string of [TZ database name](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
 <br></br>
-`POST Request http://localhost:4000/ledger/`
+`POST Request http://localhost:4000/lease/`
 
 
-  ##### Sample Input
+  ##### Sample Request
 
   | Input | Value |
   | --- | --- |
@@ -72,26 +71,34 @@ You can use Postman to execute requests and check responses.
   | weekly_rent| 234   |
   | timezone.  | "AU"  |
 
-<br></br>
-<img width="847" alt="Screenshot 2023-05-15 at 18 09 54" src="https://github.com/anjulard/Ledger_Rest_API/assets/50151335/02679403-bf77-46c0-848a-cad1bcf75de1">
-<br></br>
+  <br></br>
+  <img width="869" alt="Screenshot 2023-05-23 at 20 06 33" src="https://github.com/anjulard/Ledger_Rest_API/assets/50151335/afba5808-6e24-4557-8fa3-53feeb4b9278">
+  <br></br>
 
 - Step 02 : Copy the Auto-Generated Lease Id given by the response.
-  ##### Sample Output
+  ##### Sample Response
   `Lease with Leade ID : {Lease_Id} is added successfully.`
   <br></br>
-  <img width="863" alt="Screenshot 2023-05-15 at 18 13 21" src="https://github.com/anjulard/Ledger_Rest_API/assets/50151335/617a7ac9-d844-408d-b967-eb3d7f0a1461">
+  <img width="869" alt="Screenshot 2023-05-23 at 20 10 26" src="https://github.com/anjulard/Ledger_Rest_API/assets/50151335/bf83739e-9911-4860-977f-6df7d5d18201">
 <br></br>
+
+  If you want to retrieve the lease you created, use
+
+  `POST Request http://localhost:4000/lease/{Lease_Id}`
+
+  <br></br>
+  <img width="869" alt="Screenshot 2023-05-23 at 20 17 44" src="https://github.com/anjulard/Ledger_Rest_API/assets/50151335/c1c61e31-f795-46d4-bbc6-a1aba73380d9">
+  <br></br>
 
 
 - Step 03 :
-Generate the ledger for a particular lease by providing the Lease Id
+To generate the ledger for a particular lease, use below requ format with the Lease Id
 <br></br>
-`GET Request http://localhost:4000/ledger/generateLedger/{Lease_Id}`
+`GET Request http://localhost:4000/lease/generateLedger/{Lease_Id}`
 
-<br></br>
-<img width="869" alt="Screenshot 2023-05-15 at 18 15 15" src="https://github.com/anjulard/Ledger_Rest_API/assets/50151335/a12eccdc-b828-472f-9080-6741c9df3f1b">
-<br></br>
+  <br></br>
+  <img width="869" alt="Screenshot 2023-05-23 at 20 12 44" src="https://github.com/anjulard/Ledger_Rest_API/assets/50151335/d95422f7-b9a5-454a-a27e-09c302c9afd3">
+  <br></br>
 
 
 
