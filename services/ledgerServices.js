@@ -50,7 +50,7 @@ export const getFrequencyData = (frequency) => {
     return numberOfDays;
 }
 
-
+// Get amount to be paid during the period based on payment frequency type
 export const getAmount = (weekly_rent, frequencyType ) => {
     let amount;
     if (weekly_rent > 0 && frequencyType === "WEEKLY") {
@@ -66,6 +66,7 @@ export const getAmount = (weekly_rent, frequencyType ) => {
     return amount.toFixed(2);
 }
 
+// Calculate remaining days to reach the end date
 export const getRemainingDays = (end_date, tempDate) => {
     let remainingdays = (validateDate(end_date).getTime() - validateDate(tempDate).getTime())/ (1000 * 60 * 60 * 24);
     return remainingdays;
@@ -75,7 +76,6 @@ export const getRemainingDays = (end_date, tempDate) => {
 //Calculate total amount to be paid for the remaining days
 export const getRemainingAmount = (weekly_rent, numberOfDays) => {
     let remainingAmount = (weekly_rent / 7) * numberOfDays;
-
     return remainingAmount.toFixed(2);
 }
 
@@ -132,7 +132,6 @@ export const getWeeklyPaymentDates = (start, end, frequency) => {
 
     return line;
 }
-
 
 
 export const validateDate = (date) => {
