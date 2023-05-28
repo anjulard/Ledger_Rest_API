@@ -44,3 +44,5 @@ export const deleteLease = (req, res) => {
     res.send(` Lease with Lease ID : ${lease_id} is deleted successfully`);
 
 }
+
+export default leases;

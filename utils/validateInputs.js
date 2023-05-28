@@ -1,11 +1,12 @@
 import { body } from "express-validator";
 import timezone from "moment-timezone";
+import leases   from "../controllers/leaseController.js";
 
 
   export const validateInputs = () => {
     
     return [
-        body('start_date')
+    body('start_date')
         .notEmpty()
         .withMessage('Start Date is required.')
         .isISO8601()
@@ -51,4 +52,26 @@ import timezone from "moment-timezone";
     return !!(timezone.tz.zone(zone));
 
   }
+
+  export const validateLedger = (leaseId) => {
+    let errors = [];
+    const foundLease = leases.find(lease => lease.lease_id === leaseId);
     
+    if (! isValidUUID(leaseId)) {
+        errors.push('Invalid format of Lease Id.');
+        return errors;
+    }
+
+    if (!foundLease) {
+        errors.push('Lease not found.');
+        return errors;
+    }
+
+    return errors;
+  }
+  
+
+  export const isValidUUID = (uuid) =>  {
+    const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+    return uuidRegex.test(uuid);
+  }

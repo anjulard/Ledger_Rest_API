@@ -1,13 +1,7 @@
-import express from "express";
-import request from "supertest";
-import { createLease } from "../controllers/leaseController.js";
-import { validateInputs } from "../utils/validateInputs.js";
+import baseUrl from '../utils/baseUrl';
+import request from 'supertest';
 
-const app = express();
-
-app.post('/', validateInputs(), createLease);
-
-
+// test post request
   describe('POST /', () => {
     it('should create a new lease with valid inputs', async () => {
       const requestBody = {
@@ -18,10 +12,20 @@ app.post('/', validateInputs(), createLease);
         timezone: 'Africa/Abidjan',
       };
   
-      const response = await request(app)
+      request(baseUrl)
         .post('/')
-        .send(requestBody);
+        .send(requestBody)
   
-      expect(response.status).toBe(200);
+      .expect(200);
     });
   });
+
+// test get all leases
+describe('GET /', () => {
+  
+  it('should get all leases', async () => {
+    request(baseUrl).get('/')
+    .expect(200);
+  });
+});
+
