@@ -100,6 +100,7 @@ export const getWeeklyPaymentDates = (start, end, frequency) => {
     let line      = [];
     let end_date  = moment(end);
     let numberOfDays ;
+    
     for (let index = moment(start) ; index.isBefore(end_date); index.add(numberOfDays + 1, 'd')) {
         numberOfDays  = getFrequencyData(frequency, index);
         let startDate = moment(index);

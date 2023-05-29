@@ -54,7 +54,7 @@ import leases   from "../controllers/leaseController.js";
   }
 
   export const validateLedger = (leaseId) => {
-    let errors = [];
+    let errors       = [];
     const foundLease = leases.find(lease => lease.lease_id === leaseId);
     
     if (! isValidUUID(leaseId)) {

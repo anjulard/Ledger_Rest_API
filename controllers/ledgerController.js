@@ -1,7 +1,7 @@
 import { generateLedger }   from '../services/ledgerServices.js';
 import { prepareResponse }  from '../utils/response.js';
 import { validateLedger }   from '../utils/validateInputs.js';
-import leases   from "../controllers/leaseController.js";
+import leases               from "../controllers/leaseController.js";
 
 // Generate Ledger for a specific lease id
 export const fetchLedger = (req, res) => {
