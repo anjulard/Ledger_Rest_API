@@ -3,15 +3,12 @@ import moment from 'moment';
 
 export const generateLedger = (start_date, end_date, frequency, weekly_rent) => {
     let paymentLines = [];
-    let lineItem     = [];
     let amount       = getAmount(weekly_rent, frequency);
     end_date         = moment(end_date);
 
-    if ( frequency == "WEEKLY" || frequency === "FORTNIGHTLY") {
-        lineItem = getWeeklyPaymentDates( start_date, end_date, frequency );
-    } else if ( frequency === "MONTHLY") {
-        lineItem = getMonthlyPaymentDates( start_date, end_date );
-    }
+    const lineItem = frequency === 'MONTHLY'
+    ? getMonthlyPaymentDates(start_date, end_date)
+    : getWeeklyPaymentDates(start_date, end_date, frequency);
     
     for (let index in lineItem) {
 
@@ -22,15 +19,12 @@ export const generateLedger = (start_date, end_date, frequency, weekly_rent) => 
             let remainingAmount = getRemainingAmount(weekly_rent, remainingdays);
 
             paymentLines.push( { "Start Date": tempDate, "End Date": end_date, "Amount": remainingAmount } );
-
             break;
-    
         }
         
         paymentLines.push( { "Start Date" : lineItem[index].startDate, "End Date" : lineItem[index].temp, "Amount": amount } );
             
     }      
-        
     return paymentLines;
     
 }
@@ -38,31 +32,19 @@ export const generateLedger = (start_date, end_date, frequency, weekly_rent) => 
 
 // Get Payment Frequency data
 export const getFrequencyData = (frequency) => {
-    let numberOfDays;
-    
-    if (frequency === "WEEKLY") {
-        numberOfDays = 7;
-       
-    }else if (frequency === "FORTNIGHTLY") {
-        numberOfDays = 14;
-    }
-
-    return numberOfDays;
+    return frequency === 'WEEKLY' ? 7 : 14;
 }
 
 // Get amount to be paid during the period based on payment frequency type
 export const getAmount = (weekly_rent, frequencyType ) => {
-    let amount;
-    if (weekly_rent > 0 && frequencyType === "WEEKLY") {
-        amount = weekly_rent;
+    let amount = weekly_rent;
 
-    }else if (weekly_rent > 0 && frequencyType === "FORTNIGHTLY") {
-        amount = weekly_rent * 2;
-
-    }else if (weekly_rent > 0 && frequencyType === "MONTHLY") {
-        amount = ((weekly_rent / 7 ) * 365) / 12;
+    if (frequencyType === 'FORTNIGHTLY') {
+      amount *= 2;
+    } else if (frequencyType === 'MONTHLY') {
+      amount = (weekly_rent / 7) * 365 / 12;
     }
-
+  
     return amount.toFixed(2);
 }
 
@@ -104,16 +86,13 @@ export const getMonthlyPaymentDates = (start, end) => {
         }else{ 
             temp = new Date(moment(nextdate).add(numofmonths, 'M'));
             line.push( { startDate, temp } );
-
         }
         
         numofmonths = numofmonths + 1;
         startDate = moment(temp).add(1, 'd');
 
     }
-
     return line;
-
 }
 
 // Get weekly and fortnightly payment dates as an object array
@@ -129,7 +108,6 @@ export const getWeeklyPaymentDates = (start, end, frequency) => {
         line.push( { startDate, temp } );
         numberOfDays = getFrequencyData(frequency, index);
     }
-
     return line;
 }
 
