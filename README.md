@@ -17,6 +17,8 @@ This API will respond with an array of line items as below,
 The total amount for each line item in the ledger will be based on the payment frequency.
 
 
+Please refer the documentation [Ledger_Rest_API_Documentation](https://www.icloud.com/iclouddrive/04aOgej-GdjMr0Ry31PeQ4fGA#Ledger_Rest_API_Documentation) for components, functionality, usage, and any other relevant details.
+
 ## Prerequisites
 This project requires NodeJS (version 8 or later).
 - Install [Node.js](https://nodejs.org/en)
