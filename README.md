@@ -6,10 +6,11 @@ The Ledger REST API is a Node.js application that provides an endpoint to fetch 
 
 To retrieve the ledger, you need to provide the following details:
 
-- Start Date: The start date of the lease in ISO standard format.
-- End Date: The end date of the lease in ISO standard format.
-- Weekly Amount: The amount to be paid weekly for the lease.
-- Frequency of Payment: The frequency of the lease payment, specified as a string.
+- Start Date: The start date of the lease in ISO standard format. (start_date)
+- End Date: The end date of the lease in ISO standard format.(end_date)
+- Weekly Amount: The amount to be paid weekly for the lease.(weekly_rent)
+- Frequency of Payment: The frequency of the lease payment, specified as a string.(frequency)
+- Timezone : The timezone of the property should be provided as a string of [tz database names](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
 
 The API will respond with an array of line items, each containing the following information:
 
