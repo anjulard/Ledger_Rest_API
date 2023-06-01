@@ -71,7 +71,16 @@ POST http://localhost:4000/lease/
 ```
 
 In the request body, provide the lease details including the start date, end date, payment frequency, weekly amount, and timezone.
-<br></br>
+##### Sample Request
+
+| Input | Value |
+| --- | --- |
+| start_date | "2021-01-31T14:48:00" |
+| end_date   | "2022-09-05T14:48:00" |
+| frequency  | "MONTHLY"   |
+| weekly_rent| 234   |
+| timezone.  | "AU"  |
+
 ### Step 2: Retrieve the Lease Details
 
 To retrieve the lease you created, make a POST request to the following endpoint:
@@ -92,6 +101,18 @@ GET http://localhost:4000/lease/generateLedger/{Lease_Id}
 
 Replace `{Lease_Id}` with the actual Lease ID obtained from Step 1.
 
+##### Sample Response
+This is the data that the endpoint might have in its response:
+
+| Start Date | End Date | Amount |
+| --- | --- | --- |
+| "2021-01-31T09:18:00.000Z" | "2021-02-28T18:29:59.999Z" | 1016.79 |
+| "2021-03-01T18:29:59.999Z" | "2021-03-31T09:18:00.000Z" | 1016.79 |
+| "2021-04-01T09:18:00.000Z" | "2021-04-30T18:29:59.999Z" | 1016.79 |
+| "2021-05-01T18:29:59.999Z" | "2021-05-31T09:18:00.000Z" | 1016.79 |
+| ...  | ...  | ... |
+
+<br></br>
 Feel free to reach out if you have any further questions or need assistance.
 
 
