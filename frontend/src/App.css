@@ -39,6 +39,18 @@
   
 }
 
+.lease-list {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.lease-list ul li{
+  display: inline-block;
+  width: 100px;
+  border: 1px solid lightskyblue;
+  padding: 5px;
+}
+
 .inputField {
   padding: 7px;
   display: block;

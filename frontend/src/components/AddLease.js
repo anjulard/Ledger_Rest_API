@@ -1,5 +1,6 @@
 import React from "react";
 
+
 const AddLease = () => {
     const [start_date, setStartDate]   = React.useState('');
     const [end_date, setEndDate]       = React.useState('');
@@ -8,8 +9,18 @@ const AddLease = () => {
     const [timezone, setTimezone]      = React.useState('');
     
 
-    const addLease = () => {
-        console.warn(start_date, end_date, frequency, weekly_rent, timezone);
+    const addLease = async() => {
+        
+        let result = await fetch("/lease",{
+            method: "post",
+            body: JSON.stringify({ start_date, end_date, frequency, weekly_rent, timezone}),
+            headers: {
+                "Content-type" : "application/json",
+                "Accept": "application/json"
+            }
+        }).then()
+        
+        console.warn(result);
     }
 
     return (

@@ -1,9 +1,10 @@
-import React from 'react';
 import './App.css';
+import React                            from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import AddLease from './components/AddLease';
-import Nav from './components/Nav';
-import { Footer } from './components/Footer';
+import AddLease                         from './components/AddLease';
+import Nav                              from './components/Nav';
+import Footer                           from './components/Footer';
+import ShowLeases                       from './components/ShowLeases';
 
 function App() {
   return (
@@ -11,7 +12,7 @@ function App() {
       <BrowserRouter>
         <Nav/>
         <Routes>
-          <Route path='/' element = {<h1>Leases</h1>} />
+          <Route path='/' element = {<ShowLeases/>} />
           <Route path='/add' element = {<AddLease/>} />
         </Routes>
       </BrowserRouter>
