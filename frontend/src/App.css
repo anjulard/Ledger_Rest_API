@@ -35,7 +35,9 @@
 }
 
 .lease {
-  margin-left: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   
 }
 
@@ -52,7 +54,7 @@
 }
 
 .inputField {
-  padding: 7px;
+  padding: 10px;
   display: block;
   border: 1px solid gray;
   width: 300px;
@@ -82,6 +84,35 @@
 .App-link {
   color: #61dafb;
 }
+
+/* LeaseTable.css */
+table {
+  width: 90%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+th,
+td {
+  padding: 8px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+thead {
+  background-color: #f2f2f2;
+}
+
+th {
+  font-weight: bold;
+}
+
+tr:hover {
+  background-color: #f5f5f5;
+}
+
 
 @keyframes App-logo-spin {
   from {
