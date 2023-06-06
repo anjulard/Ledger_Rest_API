@@ -9,7 +9,7 @@ const ShowLeases = () => {
 
   const fetchLeases = async () => {
     try {
-      const response = await fetch('http://localhost:4000/lease/'); 
+      const response = await fetch('/lease'); 
       const data = await response.json();
       setLeases(data);
     } catch (error) {

@@ -1,4 +1,5 @@
 import React from "react";
+import Modal from 'react-modal';
 
 
 const AddLease = () => {
@@ -7,21 +8,48 @@ const AddLease = () => {
     const [frequency, setFrequency]    = React.useState('');
     const [weekly_rent, setWeeklyRent] = React.useState('');
     const [timezone, setTimezone]      = React.useState('');
-    
+    const [errorMessages, setErrorMessages]   = React.useState([]);
+    const [successMessage, setSuccessMessage] = React.useState('');
+    const [errorModalOpen, setErrorModalOpen] = React.useState(false);
 
     const addLease = async() => {
-        
-        let result = await fetch("/lease",{
-            method: "post",
-            body: JSON.stringify({ start_date, end_date, frequency, weekly_rent, timezone}),
-            headers: {
-                "Content-type" : "application/json",
-                "Accept": "application/json"
+
+        try {
+            const result = await fetch("/lease",{
+                method: "post",
+                body: JSON.stringify({ start_date, end_date, frequency, weekly_rent, timezone}),
+                headers: {
+                    "Content-type" : "application/json",
+                    "Accept": "application/json"
+                }
+            })
+
+            const data = await result.json();
+            
+            if(!result.ok) {
+                setErrorMessages(data.errors);
+                setSuccessMessage('');
+                setErrorModalOpen(true);
+                return;
+
+            }else if (data.success){
+                setErrorMessages([]);
+                setSuccessMessage(data.message);
+                setStartDate('');
+                setEndDate('');
+                setFrequency('');
+                setWeeklyRent('');
+                setTimezone('');
             }
-        }).then()
-        
-        console.warn(result);
-    }
+            
+        } catch (error) {
+            console.error('Error creating lease:', error);
+        }
+    };
+
+    const handleClosePopup = () => {
+        setSuccessMessage('');
+      };
 
     return (
         <div className="lease">
@@ -42,6 +70,25 @@ const AddLease = () => {
             value={timezone} onChange={(e) => {setTimezone(e.target.value)}}/>
 
             <button className="App-Button" onClick={addLease}>Add Lease</button>
+
+            <Modal isOpen={errorModalOpen} onRequestClose={() => setErrorModalOpen(false)} contentLabel="Error Modal">
+                <div className="error-modal">
+                    <h2 className="error-modal-heading">Errors occurred:</h2>
+                    <ul className="error-modal-list">
+                        {errorMessages.map((error, index) => (
+                            <li key={index} className="error-modal-item">{error.msg}</li>
+                        ))}
+                    </ul>
+                    <button className="error-modal-close" onClick={() => setErrorModalOpen(false)}>Close</button>
+                </div>
+            </Modal>
+
+            {successMessage && (
+                <div className="success-popup">
+                    <p>{successMessage}</p>
+                    <button className="close-button" onClick={handleClosePopup}>Close</button>
+                </div>
+            )}
         </div>
     )
 }
