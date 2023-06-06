@@ -14,8 +14,13 @@ export const createLease = (req, res) => {
     const lease = req.body;
     let leaseId = uuidv4();
     leases.push({...lease, lease_id: leaseId });
+
+    const successMessage = `New lease with Lease Id: ${leaseId} is added successfully.`;
     
-    res.send(`New lease with Lease Id : ${leaseId} is added successfully.`);
+    return res.status(200).json({
+        success: true,
+        message: successMessage,
+      });
 
 }
 
