@@ -1,14 +1,14 @@
 import moment from 'moment';
 
 
-export const generateLedger = (start_date, end_date, frequency, weekly_rent) => {
+export const generateLedger = (lease) => {
     let paymentLines = [];
-    let amount       = getAmount(weekly_rent, frequency);
-    end_date         = moment(end_date);
+    let amount       = getAmount(lease.weekly_rent, lease.frequency);
+    let end_date         = moment(lease.end_date);
 
-    const lineItem = frequency === 'MONTHLY'
-    ? getMonthlyPaymentDates(start_date, end_date)
-    : getWeeklyPaymentDates(start_date, end_date, frequency);
+    const lineItem = lease.frequency === 'MONTHLY'
+    ? getMonthlyPaymentDates(lease.start_date, end_date)
+    : getWeeklyPaymentDates(lease.start_date, end_date, lease.frequency);
     
     for (let index in lineItem) {
 
@@ -16,7 +16,7 @@ export const generateLedger = (start_date, end_date, frequency, weekly_rent) => 
         if ( end_date.isBefore(lineItem[index].temp)) {
             let tempDate        = moment(lineItem[index - 1].temp).add(1, 'd');
             let remainingdays   = getRemainingDays(end_date, tempDate);
-            let remainingAmount = getRemainingAmount(weekly_rent, remainingdays);
+            let remainingAmount = getRemainingAmount(lease.weekly_rent, remainingdays);
 
             paymentLines.push( { "Start Date": tempDate, "End Date": end_date, "Amount": remainingAmount } );
             break;
